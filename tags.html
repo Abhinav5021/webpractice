@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="btn"> Click</button>
+    <p class="txt">Hello </p>
+
+    <button id="red"> Red</button>
+    <button id="blue"> Blue</button>
+    <button id="green"> Green</button>
+
+    <script>
+        const button = document.getElementById("btn");
+        const text = document.getElementsByClassName("txt");
+        button.addEventListener("click", () => {
+            text[0].style.color = "red";
+        });
+        const redBtn = document.getElementById("red");
+        const blueBtn = document.getElementById("blue");
+        const greenBtn = document.getElementById("green");
+        redBtn.addEventListener("click", () => {
+            alert("Red Button Clicked");
+            document.body.style.backgroundColor = "red";
+        });
+        blueBtn.addEventListener("click", () => {
+            alert("Blue Button Clicked");
+            document.body.style.backgroundColor = "blue";
+        });
+        greenBtn.addEventListener("click", () => {
+            alert("Green Button Clicked");
+            document.body.style.backgroundColor = "green";
+        });
+
+
+    </script>
+</body>
+
+</html>

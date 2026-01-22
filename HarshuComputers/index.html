@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harshu Computers | Premium Laptops & Custom PCs in Yeola</title>
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary: #FFD700; /* Gold/Yellow matching your logo */
+            --dark: #121212;
+            --dark-gray: #1E1E1E;
+            --light: #F5F5F5;
+            --accent: #FFA500;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--dark); color: var(--light); line-height: 1.6; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- HEADER & NAV --- */
+        header {
+            background-color: rgba(0,0,0,0.9);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); letter-spacing: 1px; }
+        .logo span { color: #fff; }
+
+        nav ul { display: flex; gap: 2rem; }
+        nav a:hover { color: var(--primary); }
+        
+        .contact-btn {
+            background-color: var(--primary);
+            color: var(--dark);
+            padding: 0.5rem 1.2rem;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .contact-btn:hover { background-color: #fff; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 90vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1593640408182-31c70c8268f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+            margin-top: 60px;
+        }
+
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; text-transform: uppercase; }
+        .hero h1 span { color: var(--primary); }
+        .hero p { font-size: 1.2rem; margin-bottom: 2rem; max-width: 600px; }
+        
+        .cta-buttons { display: flex; gap: 1rem; }
+        .btn { padding: 10px 30px; border-radius: 5px; font-weight: bold; text-transform: uppercase; cursor: pointer; border: none; }
+        .btn-primary { background-color: var(--primary); color: var(--dark); }
+        .btn-outline { border: 2px solid var(--primary); color: var(--primary); background: transparent; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4); }
+
+        /* --- SERVICES SECTION --- */
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; margin-top: 4rem; }
+        .section-title span { border-bottom: 3px solid var(--primary); }
+
+        .services { padding: 4rem 10%; background-color: var(--dark-gray); }
+        .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        
+        .service-card {
+            background: var(--dark);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+        .service-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .service-icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
+
+        /* --- PRODUCTS SECTION --- */
+        .products { padding: 4rem 10%; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        
+        .product-card {
+            background: var(--dark-gray);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .product-img { width: 100%; height: 200px; background-color: #333; display: flex; align-items: center; justify-content: center; color: #777; }
+        .product-info { padding: 1.5rem; }
+        .tag { position: absolute; top: 10px; right: 10px; background: var(--primary); color: var(--dark); padding: 5px 10px; font-size: 0.8rem; font-weight: bold; border-radius: 3px; }
+
+        /* --- ABOUT & MAP --- */
+        .about { padding: 4rem 10%; background-color: var(--dark-gray); display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; }
+        .about-text { flex: 1; min-width: 300px; }
+        .about-text ul { margin-top: 1rem; }
+        .about-text li { margin-bottom: 0.5rem; display: flex; align-items: center; gap: 10px; }
+        .about-text li::before { content: "✓"; color: var(--primary); font-weight: bold; }
+
+        /* --- CONTACT SECTION --- */
+        .contact { padding: 4rem 10%; text-align: center; }
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+        .contact-info-box h3 { color: var(--primary); margin-bottom: 0.5rem; }
+        .contact-info-box p { margin-bottom: 1rem; font-size: 1.1rem; }
+
+        footer { background-color: #000; padding: 2rem; text-align: center; border-top: 1px solid #333; margin-top: 2rem; }
+
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            nav ul { display: none; } /* Simplified for template */
+            .logo { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">HC <span>Harshu Computers</span></div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#products">Store</a></li>
+                <li><a href="#contact" class="contact-btn">Call Now</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <h1>Tech Solutions for <br><span>Professionals & Gamers</span></h1>
+        <p>Premium Refurbished Laptops, Custom PC Builds, and Expert Repairs in Yeola. Shipping across all of Maharashtra.</p>
+        <div class="cta-buttons">
+            <button class="btn btn-primary" onclick="window.location.href='#products'">View Laptops</button>
+            <button class="btn btn-outline" onclick="window.location.href='#contact'">Build My PC</button>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <div class="section-title"><span>Our Services</span></div>
+        <div class="service-grid">
+            <div class="service-card">
+                <div class="service-icon">💻</div>
+                <h3>Laptop Sales</h3>
+                <p>Premium new and refurbished laptops from top brands like Dell, HP, and Lenovo.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🖥️</div>
+                <h3>Custom PC Builds</h3>
+                <p>Gaming beasts or workstation powerhouses. You dream it, we build it.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🛠️</div>
+                <h3>Expert Repairs</h3>
+                <p>Chip-level repairing, hardware upgrades, and software troubleshooting.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🚚</div>
+                <h3>Pan-Maharashtra Delivery</h3>
+                <p>Secure packaging and fast shipping to any district in Maharashtra.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="products">
+        <div class="section-title"><span>Featured Deals</span></div>
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="tag">Best Seller</div>
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Laptop" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="product-info">
+                    <h3>Refurbished MacBook Air</h3>
+                    <p>Pristine condition, 8GB RAM, 256GB SSD.</p>
+                    <button class="btn btn-outline" style="margin-top:1rem; width:100%">Inquire</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="tag">Gaming</div>
+                <div class="product-img">
+                     <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Gaming PC" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="product-info">
+                    <h3>Custom Gaming Rig</h3>
+                    <p>RTX 3060, Ryzen 5, RGB Liquid Cooling.</p>
+                    <button class="btn btn-outline" style="margin-top:1rem; width:100%">Customize</button>
+                </div>
+            </div>
+             <div class="product-card">
+                <div class="tag">Business</div>
+                <div class="product-img">
+                     <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Dell Laptop" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="product-info">
+                    <h3>Dell Latitude Series</h3>
+                    <p>Core i5, durable design, perfect for office work.</p>
+                    <button class="btn btn-outline" style="margin-top:1rem; width:100%">Inquire</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about">
+        <div class="about-text">
+            <h2>Why Choose Harshu Computers?</h2>
+            <p>We are Yeola's trusted destination for technology. Whether you are a student needing a budget-friendly laptop or a professional needing a high-end workstation, we have you covered.</p>
+            <ul>
+                <li>Best Market Prices on Refurbished Units</li>
+                <li>Authorized Service & Genuine Parts</li>
+                <li>Support available 7 Days a week</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="section-title"><span>Contact Us</span></div>
+        <p>Visit our store or order online via phone/WhatsApp.</p>
+        
+        <div class="contact-container">
+            <div class="contact-info-box">
+                <h3>📍 Visit Store</h3>
+                <p>Yeola, Maharashtra<br>IN 423401</p>
+            </div>
+            <div class="contact-info-box">
+                <h3>📞 Call / WhatsApp</h3>
+                <p><a href="tel:+919359717085">+91 93597-17085</a></p>
+            </div>
+            <div class="contact-info-box">
+                <h3>📧 Email</h3>
+                <p><a href="mailto:abhinavspawar2005@gmail.com">abhinavspawar2005@gmail.com</a></p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Harshu Computers. All rights reserved.</p>
+        <p style="font-size: 0.8rem; color: #555;">Developed by Abhinav Pawar</p>
+    </footer>
+
+</body>
+</html>
