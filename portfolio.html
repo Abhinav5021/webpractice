@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhinav Pawar | Portfolio</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg: #030712;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --accent: #10b981; /* Nature Green */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body {
+            background: var(--bg);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .blob {
+            position: fixed;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+            filter: blur(80px);
+            z-index: -1;
+            animation: move 20s infinite alternate;
+        }
+
+        @keyframes move {
+            from { transform: translate(-10%, -10%); }
+            to { transform: translate(100%, 50%); }
+        }
+
+        /* Layout */
+        .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+
+        header { height: 80vh; display: flex; flex-direction: column; justify-content: center; }
+        
+        .badge {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            width: fit-content;
+            margin-bottom: 1rem;
+        }
+
+        h1 { font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
+        .accent-text { color: var(--accent); }
+
+        /* Bento Grid Projects */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 24px;
+            transition: 0.3s;
+        }
+
+        .card:hover { border-color: var(--accent); transform: translateY(-5px); }
+
+        /* Footer Nav */
+        nav {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            display: flex;
+            gap: 2rem;
+            z-index: 100;
+        }
+
+        nav a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+        nav a:hover { color: white; }
+
+        .btn {
+            background: white; color: black;
+            padding: 12px 24px; border-radius: 12px;
+            text-decoration: none; font-weight: 600;
+            display: inline-block; margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="blob"></div>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#projects">Work</a>
+        <a href="#skills">Skills</a>
+        <a href="mailto:your-email@example.com">Contact</a>
+    </nav>
+
+    <div class="container">
+        <header id="home">
+            <div class="badge">Founder & President @ DSC</div>
+            <h1>Hi, I'm <span class="accent-text">Abhinav Pawar.</span><br>Backend Architect.</h1>
+            <p style="color: #94a3b8; font-size: 1.2rem; max-width: 600px;">
+                Specializing in Java & Spring Boot. I build scalable backend systems and immersive digital experiences. Currently leading technical growth at DSC.
+            </p>
+            <a href="#projects" class="btn">View My Work</a>
+        </header>
+
+        <section id="projects">
+            <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">Featured Projects</h2>
+            <div class="grid">
+                <div class="card">
+                    <i data-lucide="message-square" color="#10b981"></i>
+                    <h3 style="margin: 1rem 0;">Real-Time Chat Dashboard</h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem;">An Ocean Glass-themed dashboard using Spring Boot & WebSocket for seamless communication.</p>
+                </div>
+                <div class="card">
+                    <i data-lucide="users" color="#10b981"></i>
+                    <h3 style="margin: 1rem 0;">DSC Official Platform</h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem;">Leading the development of our club's digital home using React and Spring Boot architecture.</p>
+                </div>
+                <div class="card">
+                    <i data-lucide="calendar" color="#10b981"></i>
+                    <h3 style="margin: 1rem 0;">Mentor Meeting System</h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem;">An Android solution (XML/Java) integrated with Firebase for campus academic management.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" style="margin-top: 8rem; padding-bottom: 10rem;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">Tech Stack</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <span class="badge">Java</span>
+                <span class="badge">Spring Boot</span>
+                <span class="badge">MySQL</span>
+                <span class="badge">React</span>
+                <span class="badge">DevOps (Learning)</span>
+                <span class="badge">Firebase</span>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
