@@ -7,133 +7,150 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@mirror.js/vanilla-tilt"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
 
     <style>
-        :root { --accent: #00ffaa; --bg: #050505; --glass: rgba(255,255,255,0.03); --border: rgba(255,255,255,0.1); }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --accent: #00ffaa; --bg: #030303; --glass: rgba(255, 255, 255, 0.03); }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-        .section { padding: 80px 0; position: relative; }
-        
-        /* Cinematic Hero */
-        .hero { height: 100vh; display: flex; align-items: center; }
-        .huge-text { font-family: 'Syncopate'; font-size: clamp(3rem, 10vw, 8rem); line-height: 0.8; text-transform: uppercase; letter-spacing: -5px; }
+        /* 1. CUSTOM CURSOR */
+        #cursor {
+            width: 20px; height: 20px; background: var(--accent); border-radius: 50%;
+            position: fixed; pointer-events: none; z-index: 9999; mix-blend-mode: difference;
+            transition: transform 0.15s ease;
+        }
+
+        /* 2. DYNAMIC MESH BACKGROUND */
+        .mesh {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(0, 255, 170, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(0, 150, 255, 0.08) 0%, transparent 50%);
+            z-index: -1; filter: blur(100px);
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+
+        /* 3. HERO SECTION */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+        .huge-text { font-family: 'Syncopate'; font-size: clamp(3rem, 12vw, 12rem); line-height: 0.85; text-transform: uppercase; letter-spacing: -8px; }
         .outline { color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.2); }
-        .label { color: var(--accent); letter-spacing: 4px; text-transform: uppercase; font-size: 0.7rem; font-weight: 900; margin-bottom: 1rem; display: block; }
+        .hero-sub { color: var(--accent); letter-spacing: 5px; font-weight: 900; margin-bottom: 20px; display: block; }
 
-        /* DATA WIDGETS SECTION */
-        .stats-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 20px; 
-            margin-top: 50px;
+        /* 4. MARQUEE TECH STACK */
+        .marquee {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 30px 0; background: rgba(255,255,255,0.02);
+            overflow: hidden; white-space: nowrap; margin: 50px 0;
         }
-        .widget-card { 
-            background: var(--glass); 
-            border: 1px solid var(--border); 
-            border-radius: 24px; 
-            padding: 1.5rem; 
-            backdrop-filter: blur(10px);
-            transition: 0.4s ease;
-        }
-        .widget-card:hover { border-color: var(--accent); transform: translateY(-5px); }
-        .widget-card img { width: 100%; border-radius: 12px; }
+        .marquee-content { display: inline-block; animation: scroll 20s linear infinite; font-family: 'Syncopate'; font-size: 1.5rem; opacity: 0.5; }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        /* CERTIFICATIONS LIST */
-        .cert-list { list-style: none; margin-top: 20px; }
-        .cert-item { 
-            padding: 15px 0; 
-            border-bottom: 1px solid var(--border); 
-            display: flex; 
-            justify-content: space-between;
-            font-size: 0.9rem;
+        /* 5. BENTO PROJECT CARDS WITH TILT */
+        .project-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
+        .card {
+            background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 40px; padding: 40px; position: relative;
+            overflow: hidden; backdrop-filter: blur(20px);
+            transition: border-color 0.3s;
         }
-        .cert-link { color: var(--accent); text-decoration: none; font-weight: 700; }
+        .card:hover { border-color: var(--accent); }
+        .span-8 { grid-column: span 8; }
+        .span-4 { grid-column: span 4; }
 
-        footer { text-align: center; padding: 100px 0; border-top: 1px solid var(--border); }
+        /* 6. ANALYTICS WIDGETS */
+        .stats-img { width: 100%; filter: grayscale(1) invert(1) brightness(2); opacity: 0.7; transition: 0.5s; }
+        .card:hover .stats-img { filter: none; opacity: 1; }
+
+        .btn-circle {
+            width: 150px; height: 150px; border: 1px solid var(--accent);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            text-decoration: none; color: white; font-weight: 900;
+            margin-top: 50px; transition: 0.3s;
+        }
+        .btn-circle:hover { background: var(--accent); color: black; transform: rotate(15deg); }
+
+        @media (max-width: 900px) { .span-8, .span-4 { grid-column: span 12; } }
     </style>
 </head>
 <body>
 
+    <div id="cursor"></div>
+    <div class="mesh"></div>
+
     <div class="container">
         <section class="hero">
-            <div>
-                <span class="label">Founder & President • Developer Student Club</span>
-                <h1 class="huge-text">ABHINAV</h1>
-                <h1 class="huge-text outline">PAWAR</h1>
-                <p style="margin-top: 2rem; color: #888; max-width: 500px;">Engineering scalable systems & leading technical growth at DYPTC Pune.</p>
-            </div>
+            <span class="hero-sub" id="revealSub">FOUNDER & PRESIDENT @ DSC</span>
+            <h1 class="huge-text" id="revealName">ABHINAV</h1>
+            <h1 class="huge-text outline" id="revealLast">PAWAR</h1>
+            <p style="margin-top: 40px; color: #888; max-width: 600px; font-size: 1.2rem;">
+                Crafting the future of backend engineering at Dr. D. Y. Patil Technical Campus.
+            </p>
         </section>
 
-        <section class="section">
-            <span class="label">01 / Proof of Work</span>
-            <div class="stats-grid">
-                <div class="widget-card">
-                    <p class="label" style="font-size: 0.6rem;">GitHub Productivity</p>
-                    <img src="https://github-readme-stats.vercel.app/api?username=abhinavpawar&show_icons=true&theme=dark&hide_border=true&count_private=true" alt="GitHub Stats">
-                </div>
-                <div class="widget-card">
-                    <p class="label" style="font-size: 0.6rem;">DSA Mastery</p>
-                    <img src="https://leetcode-stats.vercel.app/api?username=abhinavpawar&theme=dark" alt="LeetCode Stats">
-                </div>
-                <div class="widget-card">
-                    <p class="label" style="font-size: 0.6rem;">Consistency Streak</p>
-                    <img src="https://github-readme-streak-stats.herokuapp.com/?user=abhinavpawar&theme=dark&hide_border=true" alt="GitHub Streak">
+        <div class="marquee">
+            <div class="marquee-content">
+                JAVA • SPRING BOOT • MYSQL • DEVOPS • REACT • PYTHON • CLOUD COMPUTING • COMMUNITY LEADERSHIP • 
+                JAVA • SPRING BOOT • MYSQL • DEVOPS • REACT • PYTHON • CLOUD COMPUTING • COMMUNITY LEADERSHIP • 
+            </div>
+        </div>
+
+        <div class="project-grid">
+            <div class="card span-8" data-tilt>
+                <span class="hero-sub" style="font-size: 0.7rem;">01 / FLAGSHIP</span>
+                <h2 style="font-size: 3rem; margin: 20px 0;">OCEAN GLASS CHAT</h2>
+                <p style="color: #666; margin-bottom: 20px;">Real-time communication dashboard with high-performance WebSockets.</p>
+                <div style="display: flex; gap: 10px;">
+                    <img src="https://github-readme-stats.vercel.app/api/pin/?username=abhinavpawar&repo=RealTimeChat&theme=dark&hide_border=true" style="height: 120px;">
                 </div>
             </div>
-        </section>
 
-        <section class="section">
-            <span class="label">02 / Certifications</span>
-            <div class="widget-card" style="width: 100%;">
-                <ul class="cert-list">
-                    <li class="cert-item">
-                        <span>Java Development Intern - Cognifyz Technologies</span>
-                        <a href="#" class="cert-link">VIEW</a>
-                    </li>
-                    <li class="cert-item">
-                        <span>Android Development Intern - Arnav Technosys</span>
-                        <a href="#" class="cert-link">VIEW</a>
-                    </li>
-                    <li class="cert-item">
-                        <span>HackerRank Java Basics</span>
-                        <a href="#" class="cert-link">VIEW</a>
-                    </li>
-                </ul>
+            <div class="card span-4" data-tilt>
+                <span class="hero-sub" style="font-size: 0.7rem;">02 / ACTIVITY</span>
+                <img src="https://github-readme-streak-stats.herokuapp.com/?user=abhinavpawar&theme=dark&hide_border=true" class="stats-img">
             </div>
-        </section>
 
-        <section class="section">
-            <span class="label">03 / Key Projects</span>
-            <div class="stats-grid">
-                <div class="widget-card">
-                    <h3>Ocean Glass Chat</h3>
-                    <p style="color: #666; font-size: 0.8rem; margin: 10px 0;">Real-time messaging with Spring Boot & WebSockets.</p>
-                    <a href="#" class="cert-link">GITHUB →</a>
-                </div>
-                <div class="widget-card">
-                    <h3>Mentor Meeting</h3>
-                    <p style="color: #666; font-size: 0.8rem; margin: 10px 0;">Android system for academic management.</p>
-                    <a href="#" class="cert-link">GITHUB →</a>
-                </div>
+            <div class="card span-4" data-tilt>
+                <h3 style="font-family: 'Syncopate'; margin-bottom: 20px;">INTERNSHIPS</h3>
+                <p style="font-size: 0.9rem; color: #888;"><b>Cognifyz Tech</b><br>Java Development</p>
+                <hr style="opacity: 0.1; margin: 15px 0;">
+                <p style="font-size: 0.9rem; color: #888;"><b>Arnav Technosys</b><br>Android (Java)</p>
             </div>
-        </section>
 
-        <footer>
-            <h2 class="huge-text outline" style="font-size: 5vw;">CONTACT</h2>
-            <p style="margin-top: 2rem; font-weight: 900;">abhinavpawar@email.com</p>
+            <div class="card span-8" data-tilt>
+                <span class="hero-sub" style="font-size: 0.7rem;">03 / PROBLEM SOLVING</span>
+                <img src="https://leetcode-stats.vercel.app/api?username=abhinavpawar&theme=dark" class="stats-img">
+            </div>
+        </div>
+
+        <footer style="padding: 100px 0; display: flex; flex-direction: column; align-items: center;">
+            <p class="hero-sub">READY TO CONNECT?</p>
+            <a href="mailto:abhinavpawar@email.com" class="btn-circle">LET'S TALK</a>
         </footer>
     </div>
 
     <script>
-        lucide.createIcons();
-        gsap.from(".huge-text", { y: 100, opacity: 0, duration: 1, stagger: 0.2, ease: "power4.out" });
-        gsap.from(".widget-card", { 
-            scrollTrigger: ".stats-grid", 
-            y: 50, opacity: 0, duration: 0.8, stagger: 0.1 
+        // Custom Cursor Logic
+        const cursor = document.querySelector('#cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Entrance Animations
+        gsap.from("#revealSub", { opacity: 0, y: 20, duration: 1, delay: 0.5 });
+        gsap.from("#revealName", { opacity: 0, x: -100, duration: 1.2, delay: 0.7, ease: "power4.out" });
+        gsap.from("#revealLast", { opacity: 0, x: 100, duration: 1.2, delay: 0.9, ease: "power4.out" });
+
+        // Initialize Tilt.js
+        VanillaTilt.init(document.querySelectorAll(".card"), {
+            max: 10,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.2,
         });
     </script>
 </body>
