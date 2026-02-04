@@ -14,7 +14,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        .container { max-width: 1400px; margin: 0 auto; padding: 40px 5%; }
+        .container { max-width: 1300px; margin: 0 auto; padding: 40px 5%; }
         
         /* Typography */
         .huge-text { font-family: 'Syncopate'; font-size: clamp(2.5rem, 8vw, 8rem); line-height: 0.85; text-transform: uppercase; letter-spacing: -5px; }
@@ -31,100 +31,86 @@
         }
         .card:hover { border-color: var(--accent); background: rgba(255,255,255,0.06); }
 
-        /* Grid Spans */
         .span-12 { grid-column: span 12; }
         .span-8 { grid-column: span 8; }
-        .span-6 { grid-column: span 6; }
         .span-4 { grid-column: span 4; }
+        .span-6 { grid-column: span 6; }
 
-        /* List Styling */
+        .stats-img { width: 100%; border-radius: 15px; min-height: 150px; background: rgba(255,255,255,0.02); }
+
+        /* Experience Rows */
         .item-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .item-row h4 { font-size: 0.9rem; }
-        .item-row p { font-size: 0.8rem; color: #888; }
-
         .badge-pill { background: var(--accent); color: black; padding: 4px 12px; border-radius: 50px; font-size: 0.6rem; font-weight: 900; }
-        
+
         @media (max-width: 900px) { .span-8, .span-4, .span-6 { grid-column: span 12; } }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <header style="padding: 100px 0 50px;">
-            <span class="label">IndiaAI Impact Summit 2026 Organizer</span>
+        <header style="padding: 80px 0 40px;">
+            <span class="label">President & Founder @ DSC</span>
             <h1 class="huge-text">ABHINAV</h1>
             <h1 class="huge-text outline">PAWAR</h1>
-            <p style="margin-top: 30px; color: #888; max-width: 600px; font-size: 1.1rem;">
-                Founder & President of DSC @ DYPTC Pune. Backend Architect & Community Leader focused on Java environments.
+            <p style="margin-top: 25px; color: #888; max-width: 550px; font-size: 1.1rem;">
+                Software Engineer specialized in Java ecosystems. Currently leading the <b>Developer Student Club</b> at Dr. D. Y. Patil Technical Campus.
             </p>
         </header>
 
         <div class="grid">
             <div class="card span-8" data-tilt>
-                <div>
-                    <span class="label">Major Achievement</span>
-                    <h2 style="font-family: 'Syncopate'; font-size: 1.8rem;">MIC–AICTE | IndiaAI Impact Summit</h2>
-                    <p style="color: #888; margin-top: 10px;">Hosted and organized the AI-focused technical summit at college level through DSC, impacting hundreds of students in Jan 2026.</p>
-                </div>
+                <span class="label">Live Coding Consistency</span>
+                <img src="https://github-readme-streak-stats.herokuapp.com/?user=Abhinav5021&theme=dark&hide_border=true&stroke=00ffaa&ring=00ffaa&fire=00ffaa" class="stats-img" onerror="this.src='https://placehold.co/600x200/030303/00ffaa?text=Activity+Syncing...'">
             </div>
 
             <div class="card span-4" data-tilt>
-                <span class="label">Skill Verification</span>
-                <div class="item-row"><h4>Java Professional</h4> <span class="badge-pill">VERIFIED</span></div>
+                <span class="label">Verified Skills</span>
+                <div class="item-row"><h4>Java</h4> <span class="badge-pill">VERIFIED</span></div>
                 <div class="item-row"><h4>Problem Solving</h4> <span class="badge-pill">VERIFIED</span></div>
                 <div class="item-row"><h4>Python Core</h4> <span class="badge-pill">VERIFIED</span></div>
+                <div class="item-row"><h4>React Basics</h4> <span class="badge-pill">VERIFIED</span></div>
             </div>
 
             <div class="card span-6" data-tilt>
-                <span class="label">Work Experience</span>
+                <span class="label">Experience</span>
                 <div class="item-row">
                     <div><h4>Cognifyz Technologies</h4><p>Java Development Intern</p></div>
-                    <p>1 Month</p>
                 </div>
                 <div class="item-row">
                     <div><h4>Arnav Technosys</h4><p>Android (Java) Intern</p></div>
-                    <p>6 Weeks</p>
                 </div>
             </div>
 
             <div class="card span-6" data-tilt>
-                <span class="label">Education History</span>
+                <span class="label">Education</span>
                 <div class="item-row">
-                    <div><h4>BE Computer Science</h4><p>Dr. D. Y. Patil Technical Campus</p></div>
+                    <div><h4>BE Computer Science</h4><p>DYPTC Pune</p></div>
                     <p>2027</p>
                 </div>
                 <div class="item-row">
-                    <div><h4>Diploma in Comp Tech</h4><p>Sanjivani K.B.P. Polytechnic</p></div>
+                    <div><h4>Diploma in Comp Tech</h4><p>Sanjivani Polytechnic</p></div>
                     <p>80.51%</p>
                 </div>
             </div>
 
-            <div class="card span-8" data-tilt style="background: linear-gradient(135deg, rgba(0,255,170,0.1), transparent);">
+            <div class="card span-12" data-tilt style="background: linear-gradient(90deg, rgba(0,255,170,0.1), transparent);">
                 <div>
-                    <span class="label">Project 01</span>
-                    <h2 style="font-family: 'Syncopate';">REAL-TIME CHAT</h2>
-                    <p style="color: #aaa; margin-top: 10px;">Spring Boot + Ocean Glass UI. Features real-time WebSocket communication and secure backend architecture.</p>
-                </div>
-            </div>
-
-            <div class="card span-4" data-tilt>
-                <div>
-                    <span class="label">Project 02</span>
-                    <h2 style="font-family: 'Syncopate'; font-size: 1.2rem;">MENTOR MEETING SYSTEM</h2>
-                    <p style="color: #777; font-size: 0.8rem; margin-top: 10px;">An Android-based coordination platform built for academic mentors and students.</p>
+                    <span class="label">Project Showcase</span>
+                    <h2 style="font-family: 'Syncopate'; font-size: 2.5rem;">REAL-TIME CHAT</h2>
+                    <p style="color: #aaa; margin-top: 10px;">Spring Boot + Ocean Glass UI. Real-time messaging with high-performance WebSockets.</p>
                 </div>
             </div>
 
             <div class="card span-12" data-tilt>
-                <span class="label">Developer Activity</span>
-                <img src="https://github-readme-stats.vercel.app/api?username=abhinavpawar&show_icons=true&theme=dark&hide_border=true&count_private=true" style="width: 100%; border-radius: 15px;">
+                <span class="label">Full Tech Productivity</span>
+                <img src="https://github-readme-stats.vercel.app/api?username=Abhinav5021&show_icons=true&theme=dark&hide_border=true&count_private=true&title_color=00ffaa&icon_color=00ffaa&text_color=ffffff" class="stats-img" onerror="this.src='https://placehold.co/1000x300/030303/00ffaa?text=Fetching+GitHub+Stats...'">
             </div>
         </div>
 
-        <footer style="padding: 100px 0; text-align: center;">
-            <p class="label">Let's build the future</p>
-            <h2 class="huge-text outline" style="font-size: 5vw;">GET IN TOUCH</h2>
-            <p style="margin-top: 2rem; font-weight: 900;">abhinavpawar@email.com</p>
+        <footer style="padding: 100px 0; text-align: center; border-top: 1px solid var(--border); margin-top: 50px;">
+            <p class="label">Let's work together</p>
+            <h2 class="huge-text outline" style="font-size: 5vw;">CONTACT</h2>
+            <p style="margin-top: 2rem; font-family: 'Syncopate'; font-size: 1.2rem;">abhinavpawar@email.com</p>
         </footer>
     </div>
 
