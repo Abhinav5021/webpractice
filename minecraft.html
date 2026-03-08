@@ -2,25 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>JS Minecraft Lite</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Minecraft Full</title>
     <style>
-        body { margin: 0; overflow: hidden; font-family: sans-serif; }
+        body { margin: 0; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        /* UI Elements */
         #crosshair {
             position: absolute; top: 50%; left: 50%;
-            width: 20px; height: 20px;
+            width: 15px; height: 15px;
             border: 2px solid white; border-radius: 50%;
             transform: translate(-50%, -50%);
-            pointer-events: none;
+            pointer-events: none; z-index: 10;
         }
+
         #instructions {
             position: absolute; top: 20px; left: 20px;
-            color: white; background: rgba(0,0,0,0.5); padding: 10px;
+            color: white; background: rgba(0,0,0,0.6);
+            padding: 15px; border-radius: 8px; pointer-events: none;
         }
+
+        #hotbar {
+            position: absolute; bottom: 20px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; gap: 10px;
+            background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;
+        }
+
+        .slot {
+            width: 50px; height: 50px; border: 3px solid #555;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold; background: #333;
+        }
+
+        .slot.active { border-color: #fff; background: #666; }
     </style>
 </head>
 <body>
+
     <div id="crosshair"></div>
-    <div id="instructions">Click to Play<br>(WASD to Move, Mouse to Look)</div>
+    <div id="instructions">
+        <b>CONTROLS:</b><br>
+        Click screen to Start<br>
+        WASD: Move | SPACE: Jump<br>
+        Left Click: Break | Right Click: Place<br>
+        Keys 1, 2, 3: Switch Blocks
+    </div>
+
+    <div id="hotbar">
+        <div id="slot1" class="slot active">G</div>
+        <div id="slot2" class="slot">D</div>
+        <div id="slot3" class="slot">S</div>
+    </div>
 
     <script type="importmap">
         {
@@ -35,61 +68,117 @@
         import * as THREE from 'three';
         import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 
-        // --- SCENE SETUP ---
+        // --- CORE VARIABLES ---
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x87CEEB); // Sky Blue
+        scene.background = new THREE.Color(0x87CEEB);
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // --- CONTROLS ---
         const controls = new PointerLockControls(camera, document.body);
-        document.body.addEventListener('click', () => controls.lock());
-        
-        const moveSpeed = 0.1;
-        let keys = {};
-        document.addEventListener('keydown', (e) => keys[e.code] = true);
-        document.addEventListener('keyup', (e) => keys[e.code] = false);
+        const objects = [];
+        let currentBlockType = 0x44aa44; // Default: Grass Green
+
+        // --- MATERIALS ---
+        const blockTypes = {
+            'Digit1': 0x44aa44, // Grass
+            'Digit2': 0x8B4513, // Dirt
+            'Digit3': 0x808080  // Stone
+        };
 
         // --- WORLD GENERATION ---
-        // Simple Grass Floor
-        const boxSize = 1;
-        const geometry = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
-        const material = new THREE.MeshLambertMaterial({ color: 0x44aa44 });
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        
+        function createBlock(x, y, z, color) {
+            const material = new THREE.MeshLambertMaterial({ color: color });
+            const cube = new THREE.Mesh(geometry, material);
+            cube.position.set(x, y, z);
+            scene.add(cube);
+            objects.push(cube);
+        }
 
-        for (let x = -10; x < 10; x++) {
-            for (let z = -10; z < 10; z++) {
-                const cube = new THREE.Mesh(geometry, material);
-                cube.position.set(x, 0, z);
-                scene.add(cube);
+        // Create a 10x10 floor
+        for (let x = -5; x < 5; x++) {
+            for (let z = -5; z < 5; z++) {
+                createBlock(x, 0, z, 0x44aa44);
             }
         }
 
         // Lighting
-        const light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(5, 10, 7.5);
-        scene.add(light);
-        scene.add(new THREE.AmbientLight(0x404040)); // Soft light
+        const sun = new THREE.DirectionalLight(0xffffff, 1.2);
+        sun.position.set(10, 20, 10);
+        scene.add(sun);
+        scene.add(new THREE.AmbientLight(0x606060));
 
-        camera.position.y = 2; // Player height
+        camera.position.set(0, 2, 5);
+
+        // --- INTERACTION (Break/Place) ---
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2(0, 0);
+
+        document.addEventListener('mousedown', (e) => {
+            if (!controls.isLocked) {
+                controls.lock();
+                return;
+            }
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(objects);
+
+            if (intersects.length > 0) {
+                const intersect = intersects[0];
+
+                if (e.button === 0) { // Left Click: Break
+                    scene.remove(intersect.object);
+                    objects.splice(objects.indexOf(intersect.object), 1);
+                } 
+                else if (e.button === 2) { // Right Click: Place
+                    const pos = intersect.object.position.clone().add(intersect.face.normal);
+                    createBlock(pos.x, pos.y, pos.z, currentBlockType);
+                }
+            }
+        });
+
+        // --- KEYBOARD & MOVEMENT ---
+        let keys = {};
+        document.addEventListener('keydown', (e) => {
+            keys[e.code] = true;
+            // Hotbar Switching
+            if (blockTypes[e.code]) {
+                currentBlockType = blockTypes[e.code];
+                document.querySelectorAll('.slot').forEach(s => s.classList.remove('active'));
+                if(e.code === 'Digit1') document.getElementById('slot1').classList.add('active');
+                if(e.code === 'Digit2') document.getElementById('slot2').classList.add('active');
+                if(e.code === 'Digit3') document.getElementById('slot3').classList.add('active');
+            }
+        });
+        document.addEventListener('keyup', (e) => keys[e.code] = false);
+        document.addEventListener('contextmenu', e => e.preventDefault());
 
         // --- GAME LOOP ---
         function animate() {
             requestAnimationFrame(animate);
 
             if (controls.isLocked) {
-                if (keys['KeyW']) controls.moveForward(moveSpeed);
-                if (keys['KeyS']) controls.moveForward(-moveSpeed);
-                if (keys['KeyA']) controls.moveRight(-moveSpeed);
-                if (keys['KeyD']) controls.moveRight(moveSpeed);
+                const speed = 0.1;
+                if (keys['KeyW']) controls.moveForward(speed);
+                if (keys['KeyS']) controls.moveForward(-speed);
+                if (keys['KeyA']) controls.moveRight(-speed);
+                if (keys['KeyD']) controls.moveRight(speed);
+                
+                // Simple Jump (No physics engine yet)
+                if (keys['Space'] && camera.position.y <= 2) {
+                    camera.position.y += 0.2;
+                }
+                if (camera.position.y > 2) camera.position.y -= 0.05; // Fake gravity
             }
 
             renderer.render(scene, camera);
         }
         animate();
 
-        // Handle Resize
+        // Resize behavior
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
